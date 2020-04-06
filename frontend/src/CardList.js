@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-syntax */
 export default class CardList {
   constructor(DOM) {
@@ -21,7 +23,6 @@ export default class CardList {
   render(card, api, userId) {
     api.getPicturesFromServer()
       .then((array) => {
-        console.log(array);
         let i = 0;
         for (const data of array.reverse()) {
           if (data.owner._id === userId) {

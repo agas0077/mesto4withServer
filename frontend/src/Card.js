@@ -1,3 +1,10 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable consistent-return */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-alert */
+/* eslint-disable no-undef */
+/* eslint-disable default-case */
 /* eslint-disable class-methods-use-this */
 export default class Card {
   createMyCard(name, link, _id, likes) {

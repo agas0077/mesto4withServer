@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-undef */
 import '../pages/index.css';
 import Api from './Api';
 import Card from './Card';
@@ -25,7 +27,7 @@ const placesList = document.querySelector('.places-list');
 const userName = document.querySelector('.user-info__name');
 const userAbout = document.querySelector('.user-info__job');
 const fieldsForValidation = ['name', 'link', 'authorName', 'about', 'avatarLink'];
-const userId = 'facb15f543978314e4235451'
+const userId = 'facb15f543978314e4235451';
 
 // Попап профиля
 const profilePopup = document.querySelector('#profile-form');
@@ -45,9 +47,6 @@ const avatarPopup = document.querySelector('#avatar-form');
 const avatarPopupOpenBtn = document.querySelector('.user-info__photo');
 const avatarPopupCloseBtn = avatarPopup.querySelector('.popup__close');
 const avatarPopupSubmitBtn = avatarPopup.querySelector('.button_avatarSave');
-
-// Определение вида сборки
-const isDev = process.env.NODE_ENV === 'development';
 
 // Классы
 const api = new Api('http://localhost:3000', '366ae70b-266a-41f4-b874-e57697e718a8');
@@ -94,7 +93,7 @@ function addMorePic() {
       addPopup.classList.remove('popup_is-opened');
       addFormSubmitBtn.setAttribute('disabled', true);
     });
-};
+}
 
 addForm.addEventListener('submit', addMorePic);
 
@@ -132,7 +131,7 @@ document.addEventListener('keyup', (event) => {
     addPopup.classList.remove('popup_is-opened');
     profilePopup.classList.remove('popup_is-opened');
     avatarPopup.classList.remove('popup_is-opened');
-  };
+  }
 });
 
 // Подгрузка имени и "о себе" в форму
@@ -162,8 +161,7 @@ avatarForm.addEventListener('submit', (event) => {
     .then(() => {
       avatarPopupSubmitBtn.textContent = 'Сохранить';
       userInfo.setNewAvatar(avatarForm.avatarLink.value, avatarPopupOpenBtn);
-      avatarForm.avatarLink.value = "";
+      avatarForm.avatarLink.value = '';
       popup.close(event);
     });
 });
-

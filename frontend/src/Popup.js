@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-param-reassign */
 export default class Popup {
   constructor(addPopup, profilePopup, avatarPopup) {
     this.addPopup = addPopup;
