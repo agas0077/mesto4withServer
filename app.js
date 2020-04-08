@@ -6,7 +6,6 @@ const router = require('./routes/routes');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-// Не знаю зачем мне сейчас здесь парсер, но пусть будет
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public', 'dist')));

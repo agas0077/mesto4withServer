@@ -6,3 +6,4 @@ node_modules
 .npm
 .DS_Store
 .idea
+.vscode

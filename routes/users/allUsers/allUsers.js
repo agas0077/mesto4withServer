@@ -10,7 +10,7 @@ function jsonHandler(potentialJson, res) {
 }
 
 module.exports = (req, res) => {
-  const buffer = readFilePromise('data/cards.json');
+  const buffer = readFilePromise('data/users.json');
 
   buffer.then((result) => jsonHandler(result, res))
     .then((result) => {
