@@ -1,6 +1,6 @@
 const users = require('express').Router();
-const allUsers = require('./allUsers/allUsers');
-const singleUser = require('./singleUser/singleUser');
+const allUsers = require('./users/allUsers');
+const singleUser = require('./users/singleUser');
 
 
 users.use('/:id', singleUser);

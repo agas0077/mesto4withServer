@@ -1,8 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
-const readFilePromise = require('fs-readfile-promise');
-
 function jsonHandler(potentialJson, res) {
   try {
     return JSON.parse(potentialJson.toString());
@@ -24,14 +22,12 @@ function checkForId(array, res, id) {
   });
 }
 
-module.exports = (req, res) => {
-  const { id } = req.params;
+function noSuchDirecrory(res) {
+  res.status(404).json({ message: 'Запрашиваемый файл не найден' });
+}
 
-  const buffer = readFilePromise('data/users.json');
-
-  buffer.then((result) => jsonHandler(result, res))
-    .then((result) => checkForId(result, res, id))
-    .then((result) => {
-      res.status(200).send(result);
-    });
+module.exports = {
+  jsonHandler,
+  checkForId,
+  noSuchDirecrory,
 };
