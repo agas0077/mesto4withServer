@@ -2,7 +2,7 @@
 Hi, my name is Andrey and this is my first project on GH. Now, it might be working with local server, but I'm not sure=)
 
 ### Version 
-The current version is __1.0.1__
+The current version is __2.0.0__
 
 ### Techs
 In this project I used such technologies as HTML, CSS, JS, Webpack, Node.js.
