@@ -17,6 +17,8 @@ indent_size = 2
 # Possible values - lf, crlf, cr
 end_of_line = lf
 
+setEndOfLine = crlf
+
 # File character encoding
 # Possible values - latin1, utf-8, utf-16be, utf-16le
 charset = utf-8
@@ -31,3 +33,9 @@ trim_trailing_whitespace = false
 # Denotes whether file should end with a newline
 # Possible values - true, false
 insert_final_newline = true
+
+{
+    "rules": {
+        { "allow": ['_id'] }
+    }
+}
