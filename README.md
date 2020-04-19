@@ -1,8 +1,11 @@
 # mesto4withServer
-Hi, my name is Andrey and this is my first project on GH. Now, is has become a repository just for server for my project mesto4 (check in my repos).
+Hi, my name is Andrey and this is my first project on GH. Now, is has become a repository just for server for my project mesto4 (check in my repos). 
+
+### How to use
+To user this server, use _npm run start_
 
 ### Version 
-The current version is __2.1.0__
+The current version is __2.3.0__
 
 ### Techs
 In this project I used such technologies as Node.js, Express, EsLint, Body-Parser, MongoBD, Mongoose etc. For all techs used in the project check package.json .

@@ -4,12 +4,17 @@ const User = require('../models/users');
 module.exports.getUser = (req, res) => {
   const { id } = req.params;
 
+
   User.findById(id)
     .then((user) => {
       res.status(200).send(user);
     })
-    .catch(() => {
-      res.status(404).json({ message: 'Запрашиваемый пользователь не найден' });
+    .catch((err) => {
+      if (/^\w{24}$/.test(id)) {
+        res.status(404).json({ message: "Запрашиваемый пользователь не найден" });
+      } else {
+        res.status(500).json({ message: err.message });
+      }
     });
 };
 
@@ -19,7 +24,7 @@ module.exports.getUsers = (req, res) => {
       res.status(200).send(users);
     })
     .catch(() => {
-      res.status(404).json({ message: 'Запрашиваемые данные не найдены' });
+      res.status(500).json({ message: 'Запрашиваемые данные не найдены' });
     });
 };
 
@@ -56,8 +61,12 @@ module.exports.getProfile = (req, res) => {
     .then((profile) => {
       res.status(200).send(profile);
     })
-    .catch(() => {
-      res.status(404).json({ message: 'Запрашиваемый пользователь не найден' });
+    .catch((err) => {
+      if (/^\w{24}$/.test(id)) {
+        res.status(404).json({ message: "Профиль не найден" });
+      } else {
+        res.status(500).json({ message: err.message });
+      }
     });
 };
 
@@ -72,6 +81,6 @@ module.exports.updateAvatar = (req, res) => {
       res.status(200).send(profile);
     })
     .catch(() => {
-      res.status(404).json({ message: 'Не удалось обновить аватар' });
+      res.status(500).json({ message: 'Не удалось обновить аватар' });
     });
 };

@@ -7,7 +7,7 @@ module.exports.getCards = (req, res) => {
       res.status(200).send(cards);
     })
     .catch(() => {
-      res.status(404).send({ message: 'Ошибка получения карточек' });
+      res.status(500).send({ message: 'Ошибка получения карточек' });
     });
 };
 
@@ -29,10 +29,14 @@ module.exports.deleteCard = (req, res) => {
 
   Card.deleteOne({ _id: id })
     .then((card) => {
-      res.status(200).send(card);
+      if (card.deletedCount !== 0) {
+        return res.status(200).send(card);
+      } else {
+        throw Error()
+      }
     })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
+    .catch(() => {
+      res.status(404).send({ message: "Не удалось удалить фотографию" });
     });
 };
 
@@ -43,10 +47,14 @@ module.exports.putLike = (req, res) => {
     { new: true },
   )
     .then((card) => {
-      res.status(200).send(card);
+      if (card !== null) {
+        return res.status(200).send(card);
+      } else {
+        throw Error()
+      }
     })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
+    .catch(() => {
+      res.status(404).send({ message: 'Не удалось поставить лайк' });
     });
 };
 
@@ -56,10 +64,14 @@ module.exports.deleteLike = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => {
-      res.status(200).send(card);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
+  .then((card) => {
+    if (card !== null) {
+      return res.status(200).send(card);
+    } else {
+      throw Error()
+    }
+  })
+    .catch(() => {
+      res.status(404).send({ message: 'Не удалось убрать лайк' });
     });
 };
