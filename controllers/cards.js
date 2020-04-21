@@ -1,5 +1,7 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 const Card = require('../models/cards');
+const { cardResponseHandler } = require('../helpers');
 
 module.exports.getCards = (req, res) => {
   Card.find({})
@@ -27,16 +29,12 @@ module.exports.postCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   const { id } = req.params;
 
-  Card.deleteOne({ _id: id })
+  Card.findByIdAndDelete({ _id: id })
     .then((card) => {
-      if (card.deletedCount !== 0) {
-        return res.status(200).send(card);
-      } else {
-        throw Error()
-      }
+      cardResponseHandler(card, res);
     })
     .catch(() => {
-      res.status(404).send({ message: "Не удалось удалить фотографию" });
+      res.status(500).send({ message: 'Не удалось удалить фотографию' });
     });
 };
 
@@ -47,14 +45,10 @@ module.exports.putLike = (req, res) => {
     { new: true },
   )
     .then((card) => {
-      if (card !== null) {
-        return res.status(200).send(card);
-      } else {
-        throw Error()
-      }
+      cardResponseHandler(card, res);
     })
     .catch(() => {
-      res.status(404).send({ message: 'Не удалось поставить лайк' });
+      res.status(500).send({ message: 'Не удалось поставить лайк' });
     });
 };
 
@@ -64,14 +58,10 @@ module.exports.deleteLike = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-  .then((card) => {
-    if (card !== null) {
-      return res.status(200).send(card);
-    } else {
-      throw Error()
-    }
-  })
+    .then((card) => {
+      cardResponseHandler(card, res);
+    })
     .catch(() => {
-      res.status(404).send({ message: 'Не удалось убрать лайк' });
+      res.status(500).send({ message: 'Не удалось убрать лайк' });
     });
 };

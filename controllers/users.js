@@ -1,5 +1,7 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 const User = require('../models/users');
+const { userResponseHandler } = require('../helpers');
 
 module.exports.getUser = (req, res) => {
   const { id } = req.params;
@@ -7,14 +9,10 @@ module.exports.getUser = (req, res) => {
 
   User.findById(id)
     .then((user) => {
-      res.status(200).send(user);
+      userResponseHandler(user, res);
     })
     .catch((err) => {
-      if (/^\w{24}$/.test(id)) {
-        res.status(404).json({ message: "Запрашиваемый пользователь не найден" });
-      } else {
-        res.status(500).json({ message: err.message });
-      }
+      res.status(500).json({ message: err.message });
     });
 };
 
@@ -45,6 +43,10 @@ module.exports.updateProfile = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
     { $set: { name, about } },
+    {
+      runValidators: true,
+      new: true,
+    },
   )
     .then((user) => {
       res.status(200).send(user);
@@ -58,15 +60,11 @@ module.exports.getProfile = (req, res) => {
   const id = req.user._id;
 
   User.findById(id)
-    .then((profile) => {
-      res.status(200).send(profile);
+    .then((user) => {
+      userResponseHandler(user, res);
     })
     .catch((err) => {
-      if (/^\w{24}$/.test(id)) {
-        res.status(404).json({ message: "Профиль не найден" });
-      } else {
-        res.status(500).json({ message: err.message });
-      }
+      res.status(500).json({ message: err.message });
     });
 };
 
@@ -76,6 +74,10 @@ module.exports.updateAvatar = (req, res) => {
   User.findByIdAndUpdate(
     id,
     { $set: { avatar: req.body.avatar } },
+    {
+      runValidators: true,
+      new: true,
+    },
   )
     .then((profile) => {
       res.status(200).send(profile);
