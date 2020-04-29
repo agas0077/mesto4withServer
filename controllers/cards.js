@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 const Card = require('../models/cards');
-const NotFoundError = require('../errors/notFoundError');
+const NotFoundError = require('../errors/NotFoundError');
 
 module.exports.getCards = (req, res) => {
   Card.find({})
@@ -29,13 +29,13 @@ module.exports.postCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   const { id } = req.params;
 
-  Card.findByIdAndDelete({ _id: id })
+  Card.findOneAndDelete({ $and: [{ _id: id }, { owner: req.user._id }] })
     .orFail(() => new NotFoundError('Не удалось удалить фотографию'))
     .then((card) => {
       res.status(200).send(card);
     })
     .catch((err) => {
-      res.status(err.statusCode || 500).send(err.message);
+      res.status(err.statusCode || 500).send({ message: err.message });
     });
 };
 
@@ -50,7 +50,7 @@ module.exports.putLike = (req, res) => {
       res.status(200).send(card);
     })
     .catch((err) => {
-      res.status(err.statusCode || 500).send(err.message);
+      res.status(err.statusCode || 500).send({ message: err.message });
     });
 };
 
@@ -65,6 +65,6 @@ module.exports.deleteLike = (req, res) => {
       res.status(200).send(card);
     })
     .catch((err) => {
-      res.status(err.statusCode || 500).send(err.message);
+      res.status(err.statusCode || 500).send({ message: err.message });
     });
 };
