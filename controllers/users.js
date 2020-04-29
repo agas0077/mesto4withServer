@@ -1,18 +1,19 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 const User = require('../models/users');
-const { userResponseHandler } = require('../helpers');
+const NotFoundError = require('../errors/notFoundError');
 
 module.exports.getUser = (req, res) => {
   const { id } = req.params;
 
 
   User.findById(id)
+    .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
-      userResponseHandler(user, res);
+      res.status(200).send(user);
     })
     .catch((err) => {
-      res.status(500).json({ message: err.message });
+      res.status(err.statusCode || 500).json(err.message);
     });
 };
 
@@ -60,11 +61,12 @@ module.exports.getProfile = (req, res) => {
   const id = req.user._id;
 
   User.findById(id)
+    .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
-      userResponseHandler(user, res);
+      res.status(200).send(user);
     })
     .catch((err) => {
-      res.status(500).json({ message: err.message });
+      res.status(err.statusCode || 500).json(err.message);
     });
 };
 

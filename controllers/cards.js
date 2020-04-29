@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 const Card = require('../models/cards');
-const { cardResponseHandler } = require('../helpers');
+const NotFoundError = require('../errors/notFoundError');
 
 module.exports.getCards = (req, res) => {
   Card.find({})
@@ -30,11 +30,12 @@ module.exports.deleteCard = (req, res) => {
   const { id } = req.params;
 
   Card.findByIdAndDelete({ _id: id })
+    .orFail(() => new NotFoundError('Не удалось удалить фотографию'))
     .then((card) => {
-      cardResponseHandler(card, res);
+      res.status(200).send(card);
     })
-    .catch(() => {
-      res.status(500).send({ message: 'Не удалось удалить фотографию' });
+    .catch((err) => {
+      res.status(err.statusCode || 500).send(err.message);
     });
 };
 
@@ -44,11 +45,12 @@ module.exports.putLike = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
+    .orFail(() => new NotFoundError('Не удалось найти фотографию с таким id'))
     .then((card) => {
-      cardResponseHandler(card, res);
+      res.status(200).send(card);
     })
-    .catch(() => {
-      res.status(500).send({ message: 'Не удалось поставить лайк' });
+    .catch((err) => {
+      res.status(err.statusCode || 500).send(err.message);
     });
 };
 
@@ -58,10 +60,11 @@ module.exports.deleteLike = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
+    .orFail(() => new NotFoundError('Не удалось убрать лайк'))
     .then((card) => {
-      cardResponseHandler(card, res);
+      res.status(200).send(card);
     })
-    .catch(() => {
-      res.status(500).send({ message: 'Не удалось убрать лайк' });
+    .catch((err) => {
+      res.status(err.statusCode || 500).send(err.message);
     });
 };
