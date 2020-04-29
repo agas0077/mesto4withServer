@@ -1,15 +1,18 @@
 # mesto4withServer
-Hi, my name is Andrey and this is my first project on GH. Now, it might be working with local server, but I'm not sure=)
+Hi, my name is Andrey and this is my first project on GH. Now, is has become a repository just for server for my project mesto4 (check in my repos). 
+
+### How to use
+To user this server, use _npm run start_
 
 ### Version 
-The current version is __2.0.0__
+The current version is __2.4.0__
 
 ### Techs
-In this project I used such technologies as HTML, CSS, JS, Webpack, Node.js, Express.
+In this project I used such technologies as Node.js, Express, EsLint, Body-Parser, MongoBD, Mongoose etc. For all techs used in the project check package.json .
 
 ### Current state
-For now the project is avaliable at the link bellow. The code will become avalible at the master branch as soon as I get aproval from the yandex reviewer team.
+Now it has become almost a fully functional server.
 
 ### Link 
-The project can be opend from ~~[here](https://agas0077.github.io/mesto4/ "Mesto")~~. __Currently unavaliable__
+The project mesto can be opend from ~~[here](https://agas0077.github.io/mesto4/ "Mesto")~~. __Currently unavaliable__
 

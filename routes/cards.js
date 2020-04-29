@@ -1,16 +1,12 @@
-/* eslint-disable consistent-return */
-const path = require('path');
-const readFilePromise = require('fs-readfile-promise');
-const { jsonHandler } = require('../helpers/helpers');
+const cards = require('express').Router();
+const {
+  getCards, postCard, deleteCard, putLike, deleteLike,
+} = require('../controllers/cards');
 
-module.exports = (req, res) => {
-  const buffer = readFilePromise(path.join('data', 'cards.json'));
+cards.get('/', getCards);
+cards.post('/', postCard);
+cards.delete('/:id', deleteCard);
+cards.put('/:cardId/likes', putLike);
+cards.delete('/:cardId/likes', deleteLike);
 
-  buffer.then((result) => jsonHandler(result, res))
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch(() => {
-      res.status(404).json({ message: 'Запрашиваемый файл не найден' });
-    });
-};
+module.exports = cards;
