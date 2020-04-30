@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const jwt = require('jsonwebtoken');
 const Unauthorized = require('../errors/Unauthorized');
 
@@ -9,7 +10,8 @@ module.exports.auth = (req, res, next) => {
   const UnauthorizedError = new Unauthorized('Нужно войти в систему');
 
   if (!token) {
-    res.status(UnauthorizedError.statusCode || 500).send({ message: UnauthorizedError.message });
+    return res.status(UnauthorizedError.statusCode || 500)
+      .send({ message: UnauthorizedError.message });
   }
 
   try {

@@ -2,6 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 const Card = require('../models/cards');
 const NotFoundError = require('../errors/NotFoundError');
+const Forbidden = require('../errors/Forbidden');
 
 module.exports.getCards = (req, res) => {
   Card.find({})
@@ -29,10 +30,20 @@ module.exports.postCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   const { id } = req.params;
 
-  Card.findOneAndDelete({ $and: [{ _id: id }, { owner: req.user._id }] })
-    .orFail(() => new NotFoundError('Не удалось удалить фотографию'))
-    .then((card) => {
-      res.status(200).send(card);
+  Card.findById({ _id: id })
+    .orFail(() => new NotFoundError('Не удалось найти фотографию с таким id'))
+    .then(() => {
+      Card.findOneAndDelete({ $and: [{ _id: id }, { owner: req.user._id }] })
+        .orFail(() => new Forbidden('Не удалось удалить фотографию. Недостаточно прав'))
+        .then((card) => {
+          res.status(200).send(card);
+        })
+        // Не совсем понимаю, почему ошибка не идет сразу во внешний catch
+        // На сколько я понимал, выброшенное исключение должно идти до
+        // близжайшего обработчика ошибки
+        .catch((err) => {
+          res.status(err.statusCode || 500).send({ message: err.message });
+        });
     })
     .catch((err) => {
       res.status(err.statusCode || 500).send({ message: err.message });
