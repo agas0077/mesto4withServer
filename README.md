@@ -5,7 +5,7 @@ Hi, my name is Andrey and this is my first project on GH. Now, is has become a r
 To user this server, use _npm run start_
 
 ### Version 
-The current version is __2.5.0__
+The current version is __2.5.1__
 
 ### Techs
 In this project I used such technologies as Node.js, Express, EsLint, Body-Parser, MongoBD, Mongoose etc. For all techs used in the project check package.json .
