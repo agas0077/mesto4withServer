@@ -16,6 +16,7 @@ module.exports.createUser = (req, res) => {
         about,
         avatar,
       })
+        .then((user) => User.findOne({ _id: user._id }))
         .then((user) => res.status(200).send(user))
         .catch((err) => {
           res.status(500).send({ message: `Создать пользователь не удалось ${err.message}` });

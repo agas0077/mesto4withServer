@@ -1,6 +1,7 @@
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
 const validator = require('validator');
+const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs');
 const Unauthorized = require('../errors/Unauthorized');
 
@@ -17,9 +18,9 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    select: false,
     required: true,
     minlength: 8,
-    select: false,
   },
   name: {
     type: String,
@@ -43,6 +44,9 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+// Знаю про index: {unique: true}, но там ошибка приходит некрасивая
+userSchema.plugin(uniqueValidator);
 
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')

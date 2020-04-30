@@ -3,8 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-
 const bodyParser = require('body-parser');
+
 const router = require('./routes/routes');
 const { mongooseConfig, PORT, DATABASE_URL } = require('./config');
 const { login, createUser } = require('./controllers/credentials');
