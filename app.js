@@ -1,30 +1,26 @@
-require('dotenv').config();
-
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const helmet = require('helmet');
 
+const bodyParser = require('body-parser');
 const router = require('./routes/routes');
 const { mongooseConfig, PORT, DATABASE_URL } = require('./config');
-const { login, createUser } = require('./controllers/credentials');
-const { auth } = require('./middlewares/auth');
 
 const app = express();
 
-app.use(helmet());
-
 mongoose.connect(DATABASE_URL, mongooseConfig);
 
-app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public', 'dist')));
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.use((req, res, next) => {
+  req.user = {
+    _id: '5e9b1c8022bb5a322ccb83ea',
+  };
 
-app.use(auth);
+  next();
+});
 
 app.use('/', router);
 app.use('/', (req, res) => {

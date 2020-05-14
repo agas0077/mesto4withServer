@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 const User = require('../models/users');
-const NotFoundError = require('../errors/NotFoundError');
+const NotFoundError = require('../errors/notFoundError');
 
 module.exports.getUser = (req, res) => {
   const { id } = req.params;
@@ -13,7 +13,7 @@ module.exports.getUser = (req, res) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      res.status(err.statusCode || 500).json({ message: err.message });
+      res.status(err.statusCode || 500).json(err.message);
     });
 };
 
@@ -24,6 +24,17 @@ module.exports.getUsers = (req, res) => {
     })
     .catch(() => {
       res.status(500).json({ message: 'Запрашиваемые данные не найдены' });
+    });
+};
+
+
+module.exports.postUser = (req, res) => {
+  const { name, about, avatar } = req.body;
+
+  User.create({ name, about, avatar })
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      res.status(500).send({ message: `Создать пользователь не удалось ${err.message}` });
     });
 };
 
@@ -55,13 +66,15 @@ module.exports.getProfile = (req, res) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      res.status(err.statusCode || 500).json({ message: err.message });
+      res.status(err.statusCode || 500).json(err.message);
     });
 };
 
 module.exports.updateAvatar = (req, res) => {
+  const id = req.user._id;
+
   User.findByIdAndUpdate(
-    req.user._id,
+    id,
     { $set: { avatar: req.body.avatar } },
     {
       runValidators: true,
