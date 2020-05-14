@@ -18,7 +18,6 @@ app.use(helmet());
 mongoose.connect(DATABASE_URL, mongooseConfig);
 
 app.use(cookieParser());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
