@@ -14,5 +14,6 @@ In this project I used such technologies as Node.js, Express, EsLint, Body-Parse
 I hope it has now become a fully functional server...
 
 ### Link 
+Public IP: 84.201.131.12
 The project mesto can be opend from [here](https://mesto4.fun "Mesto"). __Hopefully avaliable__
 
