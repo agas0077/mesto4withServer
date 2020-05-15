@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const {
     email, password, name, about, avatar,
   } = req.body;
@@ -16,19 +16,25 @@ module.exports.createUser = (req, res) => {
         about,
         avatar,
       })
-        .then((user) => User.findOne({ _id: user._id }))
-        .then((user) => res.status(200).send(user))
-        .catch((err) => {
-          res.status(500).send({ message: `Создать пользователь не удалось ${err.message}` });
-        });
+        .then((user) => {
+          if (!user) throw new Error();
+          User.findOne({ _id: user._id });
+        })
+        .then((user) => {
+          if (!user) throw new Error();
+          res.status(200).send(user);
+        })
+        .catch(next);
     });
 };
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findUserByCredentials(email, password)
     .then((user) => {
+      if (!user) throw new Error();
+
       const { NODE_ENV, JWT_SECRET } = process.env;
 
       const token = jwt.sign(
@@ -48,7 +54,5 @@ module.exports.login = (req, res) => {
         )
         .end();
     })
-    .catch((err) => {
-      res.status(err.statusCode || 500).json({ message: err.message });
-    });
+    .catch(next);
 };
