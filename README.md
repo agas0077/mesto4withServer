@@ -5,14 +5,14 @@ Hi, my name is Andrey and this is my first project on GH. Now, is has become a r
 To user this server, use _npm run start_
 
 ### Version 
-The current version is __0.3.0__
+The current version is __0.3.1__
 
 ### Techs
 In this project I used such technologies as Node.js, Express, EsLint, Body-Parser, MongoBD, Mongoose etc. For all techs used in the project check package.json .
 
 ### Current state
-Now it has become almost a fully functional server.
+I hope it has now become a fully functional server...
 
 ### Link 
-The project mesto can be opend from ~~[here](https://agas0077.github.io/mesto4/ "Mesto")~~. __Currently unavaliable__
+The project mesto can be opend from [here](https://mesto4.fun "Mesto"). __Hopefully avaliable__
 
