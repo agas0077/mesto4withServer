@@ -3,30 +3,35 @@
 const User = require('../models/users');
 const NotFoundError = require('../errors/notFoundError');
 
-module.exports.getUser = (req, res) => {
+module.exports.getUser = (req, res, next) => {
   const { id } = req.params;
 
 
   User.findById(id)
     .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
+      if (!user) throw new Error();
       res.status(200).send(user);
     })
+<<<<<<< HEAD
     .catch((err) => {
       res.status(err.statusCode || 500).json(err.message);
     });
+=======
+    .catch(next);
+>>>>>>> master
 };
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
+      if (!users) throw new Error('Запрашиваемые данные не найдены');
       res.status(200).send(users);
     })
-    .catch(() => {
-      res.status(500).json({ message: 'Запрашиваемые данные не найдены' });
-    });
+    .catch(next);
 };
 
+<<<<<<< HEAD
 
 module.exports.postUser = (req, res) => {
   const { name, about, avatar } = req.body;
@@ -39,6 +44,9 @@ module.exports.postUser = (req, res) => {
 };
 
 module.exports.updateProfile = (req, res) => {
+=======
+module.exports.updateProfile = (req, res, next) => {
+>>>>>>> master
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(
@@ -50,21 +58,22 @@ module.exports.updateProfile = (req, res) => {
     },
   )
     .then((user) => {
+      if (!user) throw new NotFoundError();
       res.status(200).send(user);
     })
-    .catch((err) => {
-      res.status(500).send({ message: `Обновать пользователь не удалось ${err.message}` });
-    });
+    .catch(next);
 };
 
-module.exports.getProfile = (req, res) => {
+module.exports.getProfile = (req, res, next) => {
   const id = req.user._id;
 
   User.findById(id)
     .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
+      if (!user) throw new NotFoundError();
       res.status(200).send(user);
     })
+<<<<<<< HEAD
     .catch((err) => {
       res.status(err.statusCode || 500).json(err.message);
     });
@@ -73,6 +82,12 @@ module.exports.getProfile = (req, res) => {
 module.exports.updateAvatar = (req, res) => {
   const id = req.user._id;
 
+=======
+    .catch(next);
+};
+
+module.exports.updateAvatar = (req, res, next) => {
+>>>>>>> master
   User.findByIdAndUpdate(
     id,
     { $set: { avatar: req.body.avatar } },
@@ -82,9 +97,8 @@ module.exports.updateAvatar = (req, res) => {
     },
   )
     .then((profile) => {
+      if (!profile) throw new Error('Не удалось обновить аватар');
       res.status(200).send(profile);
     })
-    .catch(() => {
-      res.status(500).json({ message: 'Не удалось обновить аватар' });
-    });
+    .catch(next);
 };
