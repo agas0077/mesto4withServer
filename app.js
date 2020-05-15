@@ -1,12 +1,12 @@
+require('dotenv').config();
+
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const { Joi, celebrate, errors } = require('celebrate');
 
-const bodyParser = require('body-parser');
 const router = require('./routes/routes');
 const { mongooseConfig, PORT, DATABASE_URL } = require('./config');
 const { login, createUser } = require('./controllers/credentials');
@@ -15,11 +15,14 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const app = express();
 
+app.use(helmet());
+
 mongoose.connect(DATABASE_URL, mongooseConfig);
 mongoose.connection.on('connected', () => {
   console.log('Connected');
 });
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
@@ -49,8 +52,7 @@ app.post(
   login,
 );
 
-  next();
-});
+app.use(auth);
 
 app.use('/', router);
 app.use('/', (req, res) => {

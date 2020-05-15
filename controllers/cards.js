@@ -1,7 +1,8 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 const Card = require('../models/cards');
-const NotFoundError = require('../errors/notFoundError');
+const NotFoundError = require('../errors/NotFoundError');
+const Forbidden = require('../errors/Forbidden');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
@@ -27,16 +28,6 @@ module.exports.postCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   const { id } = req.params;
 
-<<<<<<< HEAD
-  Card.findByIdAndDelete({ _id: id })
-    .orFail(() => new NotFoundError('Не удалось удалить фотографию'))
-    .then((card) => {
-      res.status(200).send(card);
-    })
-    .catch((err) => {
-      res.status(err.statusCode || 500).send(err.message);
-    });
-=======
   Card.findById({ _id: id })
     .orFail(() => new NotFoundError('Не удалось найти фотографию с таким id'))
     .then(() => {
@@ -49,7 +40,6 @@ module.exports.deleteCard = (req, res, next) => {
         .catch(next);
     })
     .catch(next);
->>>>>>> master
 };
 
 module.exports.putLike = (req, res, next) => {
@@ -63,13 +53,7 @@ module.exports.putLike = (req, res, next) => {
       if (!card) throw new Error();
       res.status(200).send(card);
     })
-<<<<<<< HEAD
-    .catch((err) => {
-      res.status(err.statusCode || 500).send(err.message);
-    });
-=======
     .catch(next);
->>>>>>> master
 };
 
 module.exports.deleteLike = (req, res, next) => {
@@ -83,11 +67,5 @@ module.exports.deleteLike = (req, res, next) => {
       if (!card) throw new Error();
       res.status(200).send(card);
     })
-<<<<<<< HEAD
-    .catch((err) => {
-      res.status(err.statusCode || 500).send(err.message);
-    });
-=======
     .catch(next);
->>>>>>> master
 };
