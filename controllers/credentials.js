@@ -17,11 +17,9 @@ module.exports.createUser = (req, res, next) => {
         avatar,
       })
         .then((user) => {
-          if (!user) throw new Error();
           User.findOne({ _id: user._id });
         })
         .then((user) => {
-          if (!user) throw new Error();
           res.status(200).send(user);
         })
         .catch(next);
