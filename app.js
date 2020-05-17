@@ -27,6 +27,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
 
+app.use('/', (req, res, next) => {
+  console.log("Recieved")
+  next()
+})
+
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
@@ -71,7 +76,7 @@ app.use(errors());
 
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).send({ message: err.message });
-  next()
+  next();
 });
 
 
