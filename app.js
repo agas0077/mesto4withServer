@@ -16,17 +16,6 @@ const NotFoundError = require('./errors/NotFoundError');
 
 const app = express();
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', '*');
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Origin', 'http://127.0.0.1');
-  if (req.method === 'OPTIONS') {
-    res.status(200);
-  }
-  next();
-});
-
 app.use(helmet());
 
 
