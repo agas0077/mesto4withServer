@@ -12,14 +12,19 @@ const { mongooseConfig, PORT, DATABASE_URL } = require('./config');
 const { login, createUser } = require('./controllers/credentials');
 const { auth } = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const NotFoundError = require('./errors/NotFoundError')
+const NotFoundError = require('./errors/NotFoundError');
 
 const app = express();
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
-  next()
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', '*');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', 'http://127.0.0.1');
+  if (req.method === 'OPTIONS') {
+    res.status(200);
+  }
+  next();
 });
 
 app.use(helmet());
@@ -34,7 +39,6 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
-
 
 
 app.get('/crash-test', () => {
