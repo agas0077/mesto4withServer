@@ -10,6 +10,8 @@ users.get('/me', getProfile);
 
 users.get('/', getUsers);
 
+// Пробовал вынести схемы валидации в отдельный файл, но мне не понравилось, тк стало сложнее читать
+
 users.get(
   '/:id',
   celebrate({
@@ -24,7 +26,8 @@ users.patch(
   '/me/avatar',
   celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string().required(),
+      avatar: Joi.string().required()
+        .regex(/(https?:\/\/)(www\.)?((\w+\.\w{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?.*#?/i),
     }),
   }),
   updateAvatar,

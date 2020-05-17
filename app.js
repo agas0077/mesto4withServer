@@ -12,10 +12,12 @@ const { mongooseConfig, PORT, DATABASE_URL } = require('./config');
 const { login, createUser } = require('./controllers/credentials');
 const { auth } = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const NotFoundError = require('./errors/NotFoundError')
 
 const app = express();
 
 app.use(helmet());
+
 
 mongoose.connect(DATABASE_URL, mongooseConfig);
 mongoose.connection.on('connected', () => {
@@ -66,8 +68,8 @@ app.post(
 app.use(auth);
 
 app.use('/', router);
-app.use('/', (req, res) => {
-  res.status(404).json({ message: 'Запрашиваемый ресурс не найден' });
+app.use('/', () => {
+  throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
 
 app.use(errorLogger);

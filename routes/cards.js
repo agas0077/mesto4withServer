@@ -6,12 +6,14 @@ const {
 
 cards.get('/', getCards);
 
+// Пробовал вынести схемы валидации в отдельный файл, но мне не понравилось, тк стало сложнее читать
 cards.post(
   '/',
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),
-      link: Joi.string().required(),
+      link: Joi.string().required()
+        .regex(/(https?:\/\/)(www\.)?((\w+\.\w{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?.*#?/i),
     }),
   }),
   postCard,
