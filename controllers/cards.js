@@ -19,7 +19,7 @@ module.exports.postCard = (req, res, next) => {
 
   Card.create({ name, link, owner })
     .then((card) => {
-      if (card) throw new Error();
+      if (!card) throw new Error();
       res.status(200).send(card);
     })
     .catch(next);
