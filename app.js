@@ -64,7 +64,7 @@ app.use(errors());
 
 
 app.use((err, req, res) => {
-  res.setHeader('Content-Type', 'application/json').status(err.statusCode || 500).json({ message: err.message });
+  res.status(err.statusCode || 500).send({ message: err.message });
 });
 
 
