@@ -63,8 +63,9 @@ app.use(errorLogger);
 app.use(errors());
 
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).send({ message: err.message });
+  next()
 });
 
 
