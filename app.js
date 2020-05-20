@@ -17,12 +17,10 @@ const app = express();
 
 app.use(helmet());
 
-console.log(process.env.DATABASE_URL)
-
-// mongoose.connect(DATABASE_URL, mongooseConfig);
-// mongoose.connection.on('connected', () => {
-//   console.log('Connected');
-// });
+mongoose.connect(DATABASE_URL, mongooseConfig);
+mongoose.connection.on('connected', () => {
+  console.log('Connected');
+});
 
 app.use(cookieParser());
 app.use(bodyParser.json());
