@@ -19,7 +19,6 @@ module.exports.postCard = (req, res, next) => {
 
   Card.create({ name, link, owner })
     .then((card) => {
-      if (!card) throw new Error();
       res.status(200).send(card);
     })
     .catch(next);
@@ -34,7 +33,6 @@ module.exports.deleteCard = (req, res, next) => {
       Card.findOneAndDelete({ $and: [{ _id: id }, { owner: req.user._id }] })
         .orFail(() => new Forbidden('Не удалось удалить фотографию. Недостаточно прав'))
         .then((card) => {
-          if (!card) throw new Error();
           res.status(200).send(card);
         })
         .catch(next);
@@ -50,7 +48,6 @@ module.exports.putLike = (req, res, next) => {
   )
     .orFail(() => new NotFoundError('Не удалось найти фотографию с таким id'))
     .then((card) => {
-      if (!card) throw new Error();
       res.status(200).send(card);
     })
     .catch(next);
@@ -64,7 +61,6 @@ module.exports.deleteLike = (req, res, next) => {
   )
     .orFail(() => new NotFoundError('Не удалось убрать лайк'))
     .then((card) => {
-      if (!card) throw new Error();
       res.status(200).send(card);
     })
     .catch(next);

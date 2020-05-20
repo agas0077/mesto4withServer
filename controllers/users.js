@@ -10,7 +10,6 @@ module.exports.getUser = (req, res, next) => {
   User.findById(id)
     .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
-      if (!user) throw new Error();
       res.status(200).send(user);
     })
     .catch(next);
@@ -37,7 +36,6 @@ module.exports.updateProfile = (req, res, next) => {
     },
   )
     .then((user) => {
-      if (!user) throw new NotFoundError();
       res.status(200).send(user);
     })
     .catch(next);
@@ -49,7 +47,6 @@ module.exports.getProfile = (req, res, next) => {
   User.findById(id)
     .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
-      if (!user) throw new NotFoundError();
       res.status(200).send(user);
     })
     .catch(next);
