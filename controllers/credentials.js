@@ -41,6 +41,8 @@ module.exports.login = (req, res, next) => {
         { expiresIn: '7d' },
       );
 
+      console.log(KEY)
+
       res
         .cookie(
           'jwt',
