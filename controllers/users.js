@@ -18,7 +18,6 @@ module.exports.getUser = (req, res, next) => {
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
-      if (!users) throw new Error('Запрашиваемые данные не найдены');
       res.status(200).send(users);
     })
     .catch(next);
@@ -62,7 +61,6 @@ module.exports.updateAvatar = (req, res, next) => {
     },
   )
     .then((profile) => {
-      if (!profile) throw new Error('Не удалось обновить аватар');
       res.status(200).send(profile);
     })
     .catch(next);
