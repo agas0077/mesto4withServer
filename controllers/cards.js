@@ -29,7 +29,7 @@ module.exports.deleteCard = (req, res, next) => {
   Card.findById({ _id: id })
     .orFail(() => new NotFoundError('Не удалось найти фотографию с таким id'))
     .then(() => {
-      Card.findOneAndDelete({ $and: [{ _id: id }, { owner: req.user._id }] })
+      return Card.findOneAndDelete({ $and: [{ _id: id }, { owner: req.user._id }] })
         .orFail(() => new Forbidden('Не удалось удалить фотографию. Недостаточно прав'))
         .then((card) => {
           res.status(200).send(card);
