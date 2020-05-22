@@ -10,7 +10,6 @@ module.exports.getUser = (req, res, next) => {
   User.findById(id)
     .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
-      if (!user) throw new Error();
       res.status(200).send(user);
     })
     .catch(next);
@@ -19,7 +18,6 @@ module.exports.getUser = (req, res, next) => {
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
-      if (!users) throw new Error('Запрашиваемые данные не найдены');
       res.status(200).send(users);
     })
     .catch(next);
@@ -37,7 +35,6 @@ module.exports.updateProfile = (req, res, next) => {
     },
   )
     .then((user) => {
-      if (!user) throw new NotFoundError();
       res.status(200).send(user);
     })
     .catch(next);
@@ -49,7 +46,6 @@ module.exports.getProfile = (req, res, next) => {
   User.findById(id)
     .orFail(() => new NotFoundError('Запрашиваемый пользователь не найден'))
     .then((user) => {
-      if (!user) throw new NotFoundError();
       res.status(200).send(user);
     })
     .catch(next);
@@ -65,7 +61,6 @@ module.exports.updateAvatar = (req, res, next) => {
     },
   )
     .then((profile) => {
-      if (!profile) throw new Error('Не удалось обновить аватар');
       res.status(200).send(profile);
     })
     .catch(next);

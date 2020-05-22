@@ -7,7 +7,6 @@ const Forbidden = require('../errors/Forbidden');
 module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => {
-      if (!cards) throw new Error('Ошибка получения карточек');
       res.status(200).send(cards);
     })
     .catch(next);
@@ -19,7 +18,6 @@ module.exports.postCard = (req, res, next) => {
 
   Card.create({ name, link, owner })
     .then((card) => {
-      if (card) throw new Error();
       res.status(200).send(card);
     })
     .catch(next);
@@ -30,15 +28,11 @@ module.exports.deleteCard = (req, res, next) => {
 
   Card.findById({ _id: id })
     .orFail(() => new NotFoundError('Не удалось найти фотографию с таким id'))
-    .then(() => {
-      Card.findOneAndDelete({ $and: [{ _id: id }, { owner: req.user._id }] })
-        .orFail(() => new Forbidden('Не удалось удалить фотографию. Недостаточно прав'))
-        .then((card) => {
-          if (!card) throw new Error();
-          res.status(200).send(card);
-        })
-        .catch(next);
-    })
+    .then(() => Card.findOneAndDelete({ $and: [{ _id: id }, { owner: req.user._id }] })
+      .orFail(() => new Forbidden('Не удалось удалить фотографию. Недостаточно прав'))
+      .then((card) => {
+        res.status(200).send(card);
+      }))
     .catch(next);
 };
 
@@ -50,7 +44,6 @@ module.exports.putLike = (req, res, next) => {
   )
     .orFail(() => new NotFoundError('Не удалось найти фотографию с таким id'))
     .then((card) => {
-      if (!card) throw new Error();
       res.status(200).send(card);
     })
     .catch(next);
@@ -62,9 +55,8 @@ module.exports.deleteLike = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .orFail(() => new NotFoundError('Не удалось убрать лайк'))
+    .orFail(() => new NotFoundError('Не удалось найти фотографию с таким id'))
     .then((card) => {
-      if (!card) throw new Error();
       res.status(200).send(card);
     })
     .catch(next);

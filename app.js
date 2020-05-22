@@ -27,15 +27,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.post(
   '/signup',
   celebrate({
     body: Joi.object().keys({
-      email: Joi.string().required(),
+      email: Joi.string().required().email(),
       password: Joi.string().required().min(8),
       name: Joi.string().required().min(2).max(30),
       about: Joi.string().required().min(2).max(30),
-      avatar: Joi.string().required(),
+      avatar: Joi.string().required().uri(),
     }),
   }),
   createUser,
@@ -45,7 +51,7 @@ app.post(
   '/signin',
   celebrate({
     body: Joi.object().keys({
-      email: Joi.string().required(),
+      email: Joi.string().required().email(),
       password: Joi.string().required().min(8),
     }),
   }),
@@ -63,8 +69,11 @@ app.use(errorLogger);
 app.use(errors());
 
 
-app.use((err, req, res) => {
-  res.status(err.statusCode || 500).send({ message: err.message });
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = statusCode === 500 ? 'На сервере произошла ошибка' : err.message;
+  res.status(statusCode).send({ message });
 });
 
 

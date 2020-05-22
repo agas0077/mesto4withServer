@@ -5,8 +5,10 @@ module.exports.mongooseConfig = {
   useUnifiedTopology: true,
 };
 
-const { DB_PASSWORD } = process.env;
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports.PORT = process.env.PORT || 3000;
 
-module.exports.DATABASE_URL = `mongodb://DND:${DB_PASSWORD}@dnd-shard-00-00-yxink.azure.mongodb.net:27017,dnd-shard-00-01-yxink.azure.mongodb.net:27017,dnd-shard-00-02-yxink.azure.mongodb.net:27017/mesto4?ssl=true&replicaSet=DND-shard-0&authSource=admin&retryWrites=true&w=majority`;
+module.exports.KEY = isProduction ? process.env.JWT_SECRET : 'SOME-SECRET-KEY';
+
+module.exports.DATABASE_URL = isProduction ? process.env.DATABASE_URL : 'mongodb://localhost:27017/mydb';
