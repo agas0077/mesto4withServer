@@ -31,7 +31,7 @@
     "mongoose": "^5.9.9",
     "mongoose-unique-validator": "^2.0.3",
     "path": "^0.12.7",
-    "validator": "^13.0.0",
+    "validator": "^13.7.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
